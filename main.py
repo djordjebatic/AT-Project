@@ -19,10 +19,10 @@ match_data = df[['HomeTeam', 'AwayTeam', 'FTHG', 'FTAG']]
 match_data['HGD'] = match_data['FTHG'] - match_data['FTAG']
 match_data['AGD'] = match_data['FTAG'] - match_data['FTHG']
 
-goal_model_data = pd.concat([match_data[['HomeTeam', 'AwayTeam', 'HGD']].assign(home=1).rename(
-    columns={'HomeTeam': 'team', 'AwayTeam': 'opponent', 'HGD': 'goals'}),
-    match_data[['AwayTeam', 'HomeTeam', 'AGD']].assign(home=0).rename(
-        columns={'AwayTeam': 'team', 'HomeTeam': 'opponent', 'AGD': 'goals'})])
+goal_model_data = pd.concat([match_data[['HomeTeam', 'AwayTeam', 'FTHG']].assign(home=1).rename(
+    columns={'HomeTeam': 'team', 'AwayTeam': 'opponent', 'FTHG': 'goals'}),
+    match_data[['AwayTeam', 'HomeTeam', 'FTAG']].assign(home=0).rename(
+        columns={'AwayTeam': 'team', 'HomeTeam': 'opponent', 'FTAG': 'goals'})])
 
 poisson_model = smf.glm(formula="goals ~ home + team + opponent", data=goal_model_data,
                         family=sm.families.Poisson()).fit()
